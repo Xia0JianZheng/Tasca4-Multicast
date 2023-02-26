@@ -14,27 +14,23 @@ public class Servidor {
         InetAddress multicastIP;
         int port;
         boolean continueRunning = true;
-        Velocitat simulator;
+        String [] frases = {"palabra1","palabra1 palabra2","palabra1 palabra2 palabra3","palabra1 palabra2 palabra3 palabra4","palabra1 palabra2 palabra3 palabra4 palabra5 palabra6 palabra7 palabra8 palabra9","palabra1 palabra2 palabra3 palabra4 palabra5 palabra6 palabra7 palabra8 palabra9 parabla10","palabra1 palabra2 palabra3 palabra4 palabra5 palabra6 palabra7 palabra8 palabra9 palabra10 palabra11","palabra1 palabra2 palabra3 palabra4 palabra5 palabra6 palabra7 palabra8 palabra9 palabra10 palabra11 palabra12 palabra13 palabra14 palabra15"};
 
         public Servidor(int portValue, String strIp) throws IOException {
             socket = new MulticastSocket(portValue);
             multicastIP = InetAddress.getByName(strIp);
             port = portValue;
-            simulator = new Velocitat(200);
         }
 
         public void runServer() throws IOException{
             DatagramPacket packet;
-
+            Random randomData = new Random();
             byte[] sendingData;
 
-            String [] frases = {"1","1 2","1 2 3 4 5 6 7 8","8 7 6 5 4 3 2 1","0 2 3","1 1 1 1 1 1 1 1 1 1 1 1 1"};
-
             while(continueRunning){
-                sendingData = frases[(int)(Math.random() * 6)].getBytes(StandardCharsets.UTF_8);
+                sendingData = frases[randomData.nextInt(frases.length)].getBytes();
                 packet = new DatagramPacket(sendingData, sendingData.length,multicastIP, port);
                 socket.send(packet);
-
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException ex) {
